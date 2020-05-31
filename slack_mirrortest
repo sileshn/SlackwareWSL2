@@ -1,0 +1,179 @@
+#!/bin/bash
+#
+# slack-mirrorest
+# Originally written for Ubuntu by Lance Rushing <lance_rushing@hotmail.com>
+# Dated 9/1/2006
+# Taken from http://ubuntuforums.org/showthread.php?t=251398
+# This script is covered under the GNU Public License: http://www.gnu.org/licenses/gpl.txt
+#
+# Heavily modified for Slackware by Jeremy Brent Hansen <jebrhansen -at- gmail.com>
+#
+# NOTE: This won't work in Slackware 14.0 and earlier due to the OS lacking numfmt. It was
+# introduced in the coreutils package in 14.1.
+#
+# Changelog
+#
+# 2022/02/19 - Updated mirrorlist, code cleanup
+# 2016/07/07 - Updated MIRRORS variable to use EOF for easier copy/paste
+# 2016/05/28 - Added additional comments for github upload
+# 2015/11/06 - Initial release of slack-mirror-speedtest.sh
+
+# Set color variables to make results and echo statements cleaner
+grn=$(tput setaf 2)
+ylw=$(tput setaf 3)
+txtrst=$(tput sgr0)
+
+# Add or change mirrors from /etc/slackpkg/mirrors as desired.
+# Just place them between the read line and the EOF at the end. No quotes are necessary.
+read -r -d '' MIRRORS <<'EOF'
+http://ftp.cc.swin.edu.au/slackware/slackware64-15.0/
+http://ftp.swin.edu.au/slackware/slackware64-15.0/
+http://mirror.as24220.net/pub/slackware/slackware64-15.0/
+http://mirror.internode.on.net/pub/slackware/slackware64-15.0/
+http://mirrors.slackware.bg/slackware/slackware64-15.0/
+http://mirrors.unixsol.org/slackware/slackware64-15.0/
+http://slackware.telecoms.bg/slackware/slackware64-15.0/
+http://ftp.slackware-brasil.com.br/slackware64-15.0/
+http://linorg.usp.br/slackware/slackware64-15.0/
+http://mirror.datacenter.by/pub/slackware/slackware64-15.0/
+http://ftp.linux.cz/pub/linux/slackware/slackware64-15.0/
+http://download.dlackware.com/slackware/slackware64-15.0/
+http://ftp.tu-chemnitz.de/pub/linux/slackware/slackware64-15.0/
+http://mirrors.nav.ro/slackware/slackware64-15.0/
+http://nephtys.lip6.fr/pub/linux/distributions/slackware/slackware64-15.0/
+http://nephtys.lip6.fr/pub/linux/distributions/slackware/slackware64-15.0/
+http://slackware.mirrors.ovh.net/ftp.slackware.com/slackware64-15.0/
+http://slackware.uk/slackware/slackware64-15.0/
+http://ftp.ntua.gr/pub/linux/slackware/slackware64-15.0/
+http://mirror.slackware.hr/slackware/slackware64-15.0/
+http://ftp.nara.wide.ad.jp/pub/Linux/slackware/slackware64-15.0/
+http://ftp.riken.jp/Linux/slackware/slackware64-15.0/
+http://slackware.laukas.ltslackware64-15.0/
+http://slackware.qontinuum.space/slackware/slackware64-15.0/
+http://bear.alienbase.nl/mirrors/slackware/slackware64-15.0/
+http://ftp.slackware.org.nz/slackware/slackware64-15.0/
+http://mirror.rise.ph/slackware/slackware64-15.0/
+http://mirror.onet.pl/pub/mirrors/slackware/slackware64-15.0/
+http://slackware.tsu.ru/slackware/slackware64-15.0/
+http://download.nus.edu.sg/mirror/slackware/slackware64-15.0/
+http://ftp.linux.org.tr/slackware/slackware64-15.0/
+http://ftp.isu.edu.tw/pub/Linux/Slackware/slackware64-15.0/
+http://slackware.ip-connect.info/slackware64-15.0/
+http://ftp.slackware.com/pub/slackware/slackware64-15.0/
+http://mirror.lug.udel.edu/pub/slackware/slackware64-15.0/
+http://slackblog.com/slackware/slackware64-15.0/
+http://slackware.cs.utah.edu/pub/slackware/slackware64-15.0/
+http://slackware.mirrors.tds.net/pub/slackware/slackware64-15.0/
+http://ftp.is.co.za/mirror/ftp.slackware.com/pub/slackware64-15.0/
+http://ftp.wa.co.za/pub/slackware/slackware64-15.0/
+http://slackware.mirror.ac.za/slackware64-15.0/
+ftp://ftp.iinet.net.au/pub/slackware/slackware64-15.0/
+ftp://ftp.swin.edu.au/slackware/slackware64-15.0/
+ftp://mirror.as24220.net/pub/slackware/slackware64-14.2/slackware64-15.0/
+ftp://mirror.internode.on.net/pub/slackware/slackware64-15.0/
+ftp://syd.mirror.rackspace.com/slackware/slackware64-15.0/
+ftp://mirror.telepoint.bg/slackware/slackware64-15.0/
+ftp://mirrors.netix.net/slackware/slackware64-15.0/
+ftp://mirrors.slackware.bg/slackware/slackware64-15.0/
+ftp://mirrors.unixsol.org/slackware/slackware64-15.0/
+ftp://slackware.telecoms.bg/slackware/slackware64-15.0/
+ftp://ftp.slackware-brasil.com.br/slackware64-15.0/
+ftp://linorg.usp.br/slackware/slackware64-15.0/
+ftp://mirror.datacenter.by/pub/slackware/slackware64-15.0/
+ftp://mirror.csclub.uwaterloo.ca/slackware/slackware64-15.0/
+ftp://mirror.its.dal.ca/slackware/slackware64-15.0/
+ftp://ftp.linux.cz/pub/linux/slackware/slackware64-15.0/
+ftp://ftp.tu-chemnitz.de/pub/linux/slackware/slackware64-15.0/
+ftp://ftp6.gwdg.de/pub/linux/slackware/slackware64-15.0/
+ftp://linux.rz.rub.de/slackware/slackware64-15.0/
+ftp://mirror.de.leaseweb.net/slackware/slackware64-15.0/
+ftp://mirror.netcologne.de/slackware/slackware64-15.0/
+ftp://mirrors.nav.ro/slackware/slackware64-15.0/
+ftp://mirrors.dotsrc.org/slackware/slackware64-15.0/
+ftp://mirror.cedia.org.ec/slackware/slackware64-15.0/
+ftp://ftp.mirrorservice.org/sites/ftp.slackware.com/pub/slackware/slackware64-15.0/
+ftp://lon.mirror.rackspace.com/slackware/slackware64-15.0/
+ftp://mirror.bytemark.co.uk/slackware/slackware64-15.0/
+ftp://slackware.uk/slackware/slackware64-15.0/
+ftp://ftp.cc.uoc.gr/mirrors/linux/slackware/slackware64-15.0/
+ftp://ftp.ntua.gr/pub/linux/slackware/slackware64-15.0/
+ftp://hkg.mirror.rackspace.com/slackware/slackware64-15.0/
+ftp://mirror.slackware.hr/slackware/slackware64-15.0/
+ftp://ftp.nara.wide.ad.jp/pub/Linux/slackware/slackware64-15.0/
+ftp://ftp.riken.jp/Linux/slackware/slackware64-15.0/
+ftp://mirror.lagoon.nc/slackware/slackware64-15.0/
+ftp://ftp.nluug.nl/pub/os/Linux/distr/slackware/slackware64-15.0/
+ftp://mirror.nl.leaseweb.net/slackware/slackware64-15.0/
+ftp://ftp.slackware.org.nz/slackware/slackware64-15.0/
+ftp://mirror.rise.ph/slackware/slackware64-15.0/
+ftp://ftp.slackware.pl/pub/slackware/slackware64-15.0/
+ftp://mirror.onet.pl/pub/mirrors/slackware/slackware64-15.0/
+ftp://sunsite.icm.edu.pl/pub/Linux/slackware/slackware64-15.0/
+ftp://ftp.rnl.tecnico.ulisboa.pt/pub/slackware/slackware64-15.0/
+ftp://mirror.yandex.ru/slackware/slackware64-15.0/
+ftp://slackware.tsu.ru/slackware/slackware64-15.0/
+ftp://ftp.acc.umu.se/mirror/slackware.com/slackware64-15.0/
+ftp://ftpmirror.infania.net/slackware/slackware64-15.0/
+ftp://ftp.linux.org.tr/slackware/slackware64-15.0/
+ftp://ftp.yzu.edu.tw/Linux/Slackware/slackware64-15.0/
+ftp://ifconfig.com.ua/pub/Mirror/slackware/slackware64-15.0/
+ftp://mirrors.nix.org.ua/linux/slackware/slackware64-15.0/
+ftp://slackware.ip-connect.info/mirror/slackware/slackware64-15.0/
+ftp://dfw.mirror.rackspace.com/slackware/slackware64-15.0/
+ftp://ftp.lug.udel.edu/pub/slackware/slackware64-15.0/
+ftp://ftp.slackware.com/pub/slackware/slackware64-15.0/
+ftp://ftp.ussg.indiana.edu/linux/slackware/slackware64-15.0/
+ftp://mirror.cs.princeton.edu/pub/mirrors/slackware/slackware64-15.0/
+ftp://mirror.slackbuilds.org/pub/slackware/slackware64-15.0/
+ftp://mirrors.syringanetworks.net/slackware/slackware64-15.0/
+ftp://mirrors.xmission.com/slackware/slackware64-15.0/
+ftp://plug-mirror.rcac.purdue.edu/slackware/slackware64-15.0/
+ftp://slackware.absolutehosting.net/pub/slackware/slackware64-15.0/
+ftp://slackware.cs.utah.edu/slackware/slackware64-15.0/
+ftp://slackware.mirrors.tds.net/slackware64-15.0/
+ftp://ftp.is.co.za/mirror/ftp.slackware.com/pub/slackware64-15.0/
+ftp://ftp.wa.co.za/slackware/slackware64-15.0/
+ftp://slackware.mirror.ac.za/slackware64-15.0/
+EOF
+
+# Use any adequetly sized file to test the speed. This is ~7MB.
+# The location should be based on the relative location within
+# the slackware64-15.0 tree. I originally tried a smaller
+# file (FILELIST.TXT ~1MB), but I was seeing slower speed results
+# since it didn't have time to fully max my connection. Depending
+# on your internet speed, you may want to try different sized files.
+FILE="kernels/huge.s/bzImage"
+
+# Number of seconds before the test is considered a failure
+TIMEOUT="5"
+
+# Clear the string that results are stored in
+RESULTS=""
+
+# Clear the screen before proceeding
+clear
+echo -e ${ylw}"Querying mirrors - This may take a while...\n"${txtrst}
+
+for MIRROR in $MIRRORS; do
+
+  # Combine the mirror with the file to create the URL
+  URL="${MIRROR}${FILE}"
+
+  # Time the download of the file
+  SPEED=$(curl --max-time $TIMEOUT --silent --output /dev/null --write-out %{speed_download} $URL)
+
+  # If the speed is below ~10kb/s, ignore
+  if (($(echo "$SPEED < 10000.000" | bc -l))); then
+    :
+  else
+    # Use numfmt to convert to a pretty speed
+    SPEED="$(numfmt --to=iec-i --suffix=B --padding=7 $SPEED)ps"
+    echo -e "${grn}$SPEED${txtrst}\t: ${MIRROR}"
+    RESULTS="${RESULTS}${SPEED}\t: ${MIRROR}\n"
+  fi
+
+done
+
+# Display a sorted list to the prompt
+echo -e ${ylw}"\nList of the 10 fastest mirrors\n"${txtrst}
+echo -e $RESULTS | sort -hr | head -n 10

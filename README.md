@@ -147,7 +147,10 @@ Execute the command below in a windows cmd terminal from the directory where Sla
 >Slackware.exe config --default-user <username>
 ```
 
-The next step involves changing the default mirror to your liking. This is achieved by editing the `/etc/slackpkg/mirrors` file. SlackwareWSL uses the default mirror provided by Slackware `(http:\\slackware.osuosl.org\slackware64-15.0\)`. You can find a list of Slackware mirrors [here](https://mirrors.slackware.com/mirrorlist/).
+The next step involves changing the default mirror to your liking. This is achieved by editing the `/etc/slackpkg/mirrors` file. SlackwareWSL uses the default mirror provided by Slackware `(http:\\slackware.osuosl.org\slackware64-15.0\)`. You can find a list of Slackware mirrors [here](https://mirrors.slackware.com/mirrorlist/). SlackwareWSL also provides a script to list the top 10 fastest slackware mirrors. You can run the script with the following command.
+```dos
+slack_mirrortest
+```
 
 After updating the `/etc/slackpkg/mirrors` file with a mirror of your choice, run the command's below to update your system. Use sudo if running the command as user.
 ```dos

@@ -43,6 +43,7 @@ rootfs: base.tar
 	sudo cp bash_profile rootfs/root/.bash_profile
 	sudo cp bashrc rootfs/etc/skel/.bashrc
 	sudo cp bashprofile rootfs/etc/skel/.bash_profile
+	sudo cp slack_mirrortest rootfs/usr/local/bin/slack_mirrortest
 	sudo chmod +x rootfs
 
 base.tar:

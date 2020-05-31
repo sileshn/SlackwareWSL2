@@ -9,6 +9,7 @@ figlet -w 140 Welcome to SlackwareWSL
 echo -e "\033[33;7mDo not interrupt or close the terminal window till initial setup completes!!!\033[0m"
 
 setcap cap_net_raw+ep /bin/ping
+chmod +x /usr/local/bin/slack_mirrortest
 cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
 echo " "
