@@ -1,13 +1,13 @@
-# LinuxmintWSL
-Linuxmint on WSL2 (Windows 10 FCU or later) based on [wsldl](https://github.com/yuk7/wsldl).
+# SlackwareWSL
+Slackware on WSL2 (Windows 10 FCU or later) based on [wsldl](https://github.com/yuk7/wsldl).
 
 [![Screenshot-2021-06-16-205341.png](https://i.postimg.cc/qqxZSBVk/Screenshot-2021-06-16-205341.png)](https://postimg.cc/wR3VspjP)
-[![Github All Releases](https://img.shields.io/github/downloads/sileshn/LinuxmintWSL/total.svg?style=flat-square)](https://github.com/sileshn/LinuxmintWSL/releases)
+[![Github All Releases](https://img.shields.io/github/downloads/sileshn/SlackwareWSL/total.svg?style=flat-square)](https://github.com/sileshn/SlackwareWSL/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![License](https://img.shields.io/github/license/sileshn/LinuxmintWSL.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/LinuxmintWSL/main/LICENSE)
+[![License](https://img.shields.io/github/license/sileshn/SlackwareWSL.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/SlackwareWSL/main/LICENSE)
 
 ## Important information
-LinuxmintWSL includes a wsl.conf file which only has section headers. Users can use this to configure the distro to their liking. You can read more about wsl.conf and its configuration settings [here](https://docs.microsoft.com/en-us/windows/wsl/wsl-config).
+SlackwareWSL includes a wsl.conf file which only has section headers. Users can use this to configure the distro to their liking. You can read more about wsl.conf and its configuration settings [here](https://docs.microsoft.com/en-us/windows/wsl/wsl-config).
 
 ## Requirements
 * For x64 systems: Version 1903 or higher, with Build 18362 or higher.
@@ -26,19 +26,19 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 For more details, check [this](https://docs.microsoft.com/en-us/windows/wsl/install-win10) microsoft document.
 
 ## Install
-1. [Download](https://github.com/sileshn/LinuxmintWSL/releases/latest) installer zip
+1. [Download](https://github.com/sileshn/SlackwareWSL/releases/latest) installer zip
 2. Extract all files in zip file to same directory
-3. Run Mint.exe to Extract rootfs and Register to WSL
+3. Run Slackware.exe to Extract rootfs and Register to WSL
 
 **Note:**
 Exe filename is using the instance name to register. If you rename it you can register with a diffrent name and have multiple installs.
 
 If you want to use WSL2 after install, convert it with the following command.
 ```dos
-wsl --set-version Mint 2
+wsl --set-version Slackware 2
 ```
 
-You can also set wsl2 as default. Use the command below before running Mint.exe.
+You can also set wsl2 as default. Use the command below before running Slackware.exe.
 ```dos
 wsl --set-default-version 2
 ```
@@ -118,17 +118,17 @@ Usage :
 
 ## How to setup
 
-Open Mint.exe and run the following commands.
+Open Slackware.exe and run the following commands.
 ```dos
 passwd
-useradd -m -s /bin/bash <username>
+useradd -m -g users -G wheel,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner -s /bin/bash <username>
 passwd <username>
 exit
 ```
 
 You can set the user you created as default user using 2 methods.
 
-Open Mint.exe, run the following command (replace username with the actual username you created).
+Open Slackware.exe, run the following command (replace username with the actual username you created).
 ```dos
 sed -i '/\[user\]/a default = username' /etc/wsl.conf
 ```
@@ -137,47 +137,47 @@ Shutdown and restart the distro (this step is important).
 
 (or)
 
-Execute the command below in a windows cmd terminal from the directory where Mint.exe is installed.
+Execute the command below in a windows cmd terminal from the directory where Slackware.exe is installed.
 ```dos
->Mint.exe config --default-user <username>
+>Slackware.exe config --default-user <username>
 ```
 
 ## How to uninstall instance
 ```dos
->Mint.exe clean
+>Slackware.exe clean
 
 ```
 
 ## How to backup instance
 export to backup.tar.gz
 ```cmd
->Mint.exe backup --tgz
+>Slackware.exe backup --tgz
 ```
 export to backup.ext4.vhdx.gz
 ```cmd
->Mint.exe backup --vhdxgz
+>Slackware.exe backup --vhdxgz
 ```
 
 ## How to restore instance
 
 There are 2 ways to do it. 
 
-Rename the backup to rootfs.tar.gz and run Mint.exe
+Rename the backup to rootfs.tar.gz and run Slackware.exe
 
 (or)
 
 .tar(.gz)
 ```cmd
->Mint.exe install backup.tar.gz
+>Slackware.exe install backup.tar.gz
 ```
 .ext4.vhdx(.gz)
 ```cmd
->Mint.exe install backup.ext4.vhdx.gz
+>Slackware.exe install backup.ext4.vhdx.gz
 ```
 
 You may need to run the command below in some circumstances.
 ```cmd
->Mint.exe --default-uid 1000
+>Slackware.exe --default-uid 1000
 ```
 
 ## How to build
@@ -187,35 +187,13 @@ You may need to run the command below in some circumstances.
 Docker, tar, zip, unzip need to be installed.
 
 ```dos
-git clone git@gitlab.com:sileshn/LinuxmintWSL.git
-cd LinuxmintWSL
+git clone git@gitlab.com:sileshn/SlackwareWSL.git
+cd SlackwareWSL
 make
 
 ```
-Copy the Linuxmint.zip file to a safe location and run the command below to clean.
+Copy the SlackwareWSL.zip file to a safe location and run the command below to clean.
 ```dos
 make clean
 
 ```
-
-## How to run docker in LinuxmintWSL without using docker desktop.
-
-Delete older versions of docker if installed.
-```dos
-sudo apt-get remove docker docker-engine docker.io containerd runc
-
-```
-
-Execute the commands below to install docker.
-```dos
-sudo apt -y install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable"
-sudo apt update
-sudo apt install docker-ce
-sudo usermod -aG docker $USER
-```
-
-Follow [this](https://blog.nillsf.com/index.php/2020/06/29/how-to-automatically-start-the-docker-daemon-on-wsl2/) blog post for further details on how to set it up.
-
-[![Screenshot-2021-01-27-175029.png](https://i.postimg.cc/Z5vGPXwn/Screenshot-2021-01-27-175029.png)](https://postimg.cc/fVZqDqnQ)
