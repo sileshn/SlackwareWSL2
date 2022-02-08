@@ -43,7 +43,7 @@ rootfs: base.tar
 
 base.tar:
 	@echo -e '\e[1;31mExporting base.tar using docker...\e[m'
-	docker run --net=host --name slackware vbatts/slackware:current /bin/bash -c "sed -i 's/http:\/\/slackware.osuosl.org\/slackware64-current\//http:\/\/slackware.osuosl.org\/slackware64-15.0\//g' /etc/slackpkg/mirrors; echo 'YES' | slackpkg update gpg; slackpkg update; slackpkg upgrade-all; slackpkg clean-system; touch /etc/wsl.conf; echo '[automount]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[network]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[interop]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[user]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '#The Boot setting is only available on Windows 11' | tee -a /etc/wsl.conf > /dev/null; echo '[boot]' | tee -a /etc/wsl.conf > /dev/null"
+	docker run --net=host --name slackware vbatts/slackware:current /bin/bash -c "sed -i 's/http:\/\/slackware.osuosl.org\/slackware64-current\//http:\/\/slackware.osuosl.org\/slackware64-15.0\//g' /etc/slackpkg/mirrors; echo 'YES' | slackpkg update gpg; slackpkg update; slackpkg upgrade-all; slackpkg clean-system; slackpkg install nano curl make gcc sudo bc gc guile m4; touch /etc/wsl.conf; echo '[automount]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[network]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[interop]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[user]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '#The Boot setting is only available on Windows 11' | tee -a /etc/wsl.conf > /dev/null; echo '[boot]' | tee -a /etc/wsl.conf > /dev/null"
 	docker export --output=base.tar slackware
 	docker rm -f slackware
 
