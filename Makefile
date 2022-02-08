@@ -1,10 +1,10 @@
-OUT_ZIP=LinuxmintWSL.zip
-LNCR_EXE=Mint.exe
+OUT_ZIP=SlackwareWSL.zip
+LNCR_EXE=Slackware.exe
 
 DLR=curl
 DLR_FLAGS=-L
 LNCR_ZIP_URL=https://github.com/yuk7/wsldl/releases/download/21082800/icons.zip
-LNCR_ZIP_EXE=Mint.exe
+LNCR_ZIP_EXE=Slackware.exe
 
 all: $(OUT_ZIP)
 
@@ -43,9 +43,9 @@ rootfs: base.tar
 
 base.tar:
 	@echo -e '\e[1;31mExporting base.tar using docker...\e[m'
-	docker run --net=host --name mintwsl linuxmintd/mint20.3-amd64 /bin/bash -c "echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections; apt-get update; apt-get full-upgrade -y -q; apt-get install -y -q apt-transport-https apt-utils aria2 bash-completion build-essential ca-certificates curl dialog htop software-properties-common tree; touch /etc/wsl.conf; echo '[automount]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[network]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[interop]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[user]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '#The Boot setting is only available on Windows 11' | tee -a /etc/wsl.conf > /dev/null; echo '[boot]' | tee -a /etc/wsl.conf > /dev/null; unminimize; apt-get autoremove -y; apt-get clean;"
-	docker export --output=base.tar mintwsl
-	docker rm -f mintwsl
+	docker run --net=host --name slackware vbatts/slackware:current /bin/bash -c "sed -i 's/http:\/\/slackware.osuosl.org\/slackware64-current\//http:\/\/slackware.osuosl.org\/slackware64-15.0\//g' /etc/slackpkg/mirrors; echo 'YES' | slackpkg update gpg; slackpkg update; slackpkg upgrade-all; slackpkg clean-system; touch /etc/wsl.conf; echo '[automount]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[network]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[interop]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '[user]' | tee -a /etc/wsl.conf > /dev/null; echo >> /etc/wsl.conf; echo '#The Boot setting is only available on Windows 11' | tee -a /etc/wsl.conf > /dev/null; echo '[boot]' | tee -a /etc/wsl.conf > /dev/null"
+	docker export --output=base.tar slackware
+	docker rm -f slackware
 
 clean:
 	@echo -e '\e[1;31mCleaning files...\e[m'
@@ -56,4 +56,4 @@ clean:
 	-rm rootfs.tar.gz
 	-sudo rm -r rootfs
 	-rm base.tar
-	-docker rmi -f linuxmintd/mint20.3-amd64
+	-docker rmi -f vbatts/slackware:current
