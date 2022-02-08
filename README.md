@@ -1,7 +1,7 @@
 # SlackwareWSL
 Slackware on WSL2 (Windows 10 FCU or later) based on [wsldl](https://github.com/yuk7/wsldl).
 
-[![Screenshot-2021-06-16-205341.png](https://i.postimg.cc/qqxZSBVk/Screenshot-2021-06-16-205341.png)](https://postimg.cc/wR3VspjP)
+[![Screenshot-2022-02-08-085546.png](https://i.postimg.cc/qBcbxFMY/Screenshot-2022-02-08-085546.png)](https://postimg.cc/bdJ9z3nH)
 [![Github All Releases](https://img.shields.io/github/downloads/sileshn/SlackwareWSL/total.svg?style=flat-square)](https://github.com/sileshn/SlackwareWSL/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![License](https://img.shields.io/github/license/sileshn/SlackwareWSL.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/SlackwareWSL/main/LICENSE)
