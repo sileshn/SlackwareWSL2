@@ -118,7 +118,7 @@ Usage :
 
 ## How to setup
 
-Open Slackware.exe and run the following commands.
+SlackwareWSL will ask you to create a new user during its first run. If you chose to create a new user during initial setup, the steps below are not required unless you want to create additional users.
 ```dos
 passwd
 useradd -m -g users -G wheel,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner -s /bin/bash <username>
