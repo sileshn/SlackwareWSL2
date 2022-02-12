@@ -1,11 +1,9 @@
 # First run script for SlackwareWSL
 
+/mnt/c/Windows/System32/cmd.exe /C mode con:cols=140 lines=36
+figlet -w 140 Welcome to SlackwareWSL
 echo -e "\033[33;7mDo not interrupt or close the terminal window till initial setup completes!!!\033[0m"
-echo " "
-wget --no-check-certificate https://slack.conraid.net/repository/slackware64-current/figlet/figlet-2.2.5-x86_64-1cf.txz >/dev/null 2>&1
-installpkg figlet-2.2.5-x86_64-1cf.txz >/dev/null 2>&1
-rm figlet-2.2.5-x86_64-1cf.txz
-figlet -t Welcome to SlackwareWSL
+
 setcap cap_net_raw+ep /bin/ping
 cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
