@@ -1,6 +1,10 @@
 # First run script for SlackwareWSL
 
-/mnt/c/Windows/System32/cmd.exe /C mode con:cols=140 lines=36
+width=$(echo $COLUMNS)
+height=$(echo $LINES)
+if [ $width -lt 140 ]; then
+  /mnt/c/Windows/System32/cmd.exe /C mode con:cols=140 lines=36
+fi
 figlet -w 140 Welcome to SlackwareWSL
 echo -e "\033[33;7mDo not interrupt or close the terminal window till initial setup completes!!!\033[0m"
 
@@ -45,13 +49,14 @@ select yn in "Yup" "Nope"; do
             sleep 1
           done
           rm ~/.bash_profile
-          echo " "
+          /mnt/c/Windows/System32/cmd.exe /C mode con:cols=$width lines=$height
           /mnt/c/Windows/System32/wsl.exe --terminate $WSL_DISTRO_NAME
         fi
       done
       ;;
     Nope)
       clear
+      /mnt/c/Windows/System32/cmd.exe /C mode con:cols=$width lines=$height
       rm ~/.bash_profile
       break
       ;;
