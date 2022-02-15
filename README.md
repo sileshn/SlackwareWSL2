@@ -121,7 +121,10 @@ Usage :
 SlackwareWSL will ask you to create a new user during its first run. If you chose to create a new user during initial setup, the steps below are not required unless you want to create additional users.
 ```dos
 passwd
-useradd -m -g users -G wheel,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner -s /bin/bash <username>
+useradd -m -g users -G sudo,wheel,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner -s /bin/bash <username>
+echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
+echo "%sudo ALL=(ALL) ALL" >/etc/sudoers.d/sudo
+sed -i 's/PATH="\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/games"/PATH="\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/games:\/sbin:\/usr\/sbin"/g' /etc/profile
 passwd <username>
 exit
 ```
