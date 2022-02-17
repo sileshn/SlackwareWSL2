@@ -11,7 +11,6 @@ echo -e "\033[33;7mDo not interrupt or close the terminal window till initial se
 setcap cap_net_raw+ep /bin/ping
 cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
-echo -e "[automount]\n\n[network]\n\n[interop]\n\n[user]\n\n#The Boot setting is only available on Windows 11\n[boot]\n" >/etc/wsl.conf
 echo " "
 echo -e "\033[32mCreate root password\033[m"
 passwd
