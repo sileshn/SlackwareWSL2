@@ -46,7 +46,7 @@ rootfs: base.tar
 
 base.tar:
 	@echo -e '\e[1;31mExporting base.tar using docker...\e[m'
-	docker run --net=host --name slackware vbatts/slackware:current /bin/bash -c "sed -i 's/http:\/\/slackware.osuosl.org\/slackware64-current\//http:\/\/slackware.osuosl.org\/slackware64-15.0\//g' /etc/slackpkg/mirrors; echo 'YES' | slackpkg update gpg; slackpkg update; slackpkg upgrade-all; slackpkg clean-system; slackpkg install acl attr bash-completion bc ca-certificates cpio curl gc gcc groff guile infozip iputils libcap m4 make man nano sharutils sudo; wget --no-check-certificate https://slack.conraid.net/repository/slackware64-current/figlet/figlet-2.2.5-x86_64-1cf.txz; installpkg figlet-2.2.5-x86_64-1cf.txz; rm figlet-2.2.5-x86_64-1cf.txz"
+	docker run --net=host --name slackware vbatts/slackware:current /bin/bash -c "sed -i 's/http:\/\/slackware.osuosl.org\/slackware64-current\//http:\/\/slackware.osuosl.org\/slackware64-15.0\//g' /etc/slackpkg/mirrors; echo 'YES' | slackpkg update gpg; slackpkg update; slackpkg upgrade-all; slackpkg clean-system; slackpkg install acl attr bash-completion binutils bc ca-certificates cpio curl elogind flex gc git gcc groff guile htop infozip iputils libcap libunwind m4 make man nano neofetch openssh parted pkg-config readline reiserfsprogs sharutils squashfs-tools socat sudo usbutils vim; wget --no-check-certificate https://slack.conraid.net/repository/slackware64-current/figlet/figlet-2.2.5-x86_64-1cf.txz; installpkg figlet-2.2.5-x86_64-1cf.txz; rm figlet-2.2.5-x86_64-1cf.txz"
 	docker export --output=base.tar slackware
 	docker rm -f slackware
 
