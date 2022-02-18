@@ -129,7 +129,6 @@ echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
 echo "%sudo ALL=(ALL) ALL" >/etc/sudoers.d/sudo
 sed -i 's/PATH="\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/games"/PATH="\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/games:\/sbin:\/usr\/sbin"/g' /etc/profile
 passwd <username>
-exit
 ```
 
 You can set the user you created as default user using 2 methods.
@@ -146,6 +145,15 @@ Shutdown and restart the distro (this step is important).
 Execute the command below in a windows cmd terminal from the directory where Slackware.exe is installed.
 ```dos
 >Slackware.exe config --default-user <username>
+```
+
+The next step involves changing the default mirror to your liking. This is achieved by editing the `/etc/slackpkg/mirrors` file. SlackwareWSL uses the default mirror provided by Slackware `(http:\\slackware.osuosl.org\slackware64-15.0\)`. You can find a list of Slackware mirrors [here](https://mirrors.slackware.com/mirrorlist/).
+
+After updating the `/etc/slackpkg/mirrors` file with a mirror of your choice, run the command's below to update your system. Use sudo if running the command as user.
+```dos
+slackpkg update gpg
+slackpkg update
+slackpkg upgrade-all
 ```
 
 ## How to uninstall instance
