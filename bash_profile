@@ -1,5 +1,8 @@
 # First run script for SlackwareWSL
 
+ylw=$(tput setaf 3)
+txtrst=$(tput sgr0)
+
 width=$(echo $COLUMNS)
 height=$(echo $LINES)
 if [ $width -lt 140 ]; then
@@ -43,9 +46,9 @@ select yn in "Yup" "Nope"; do
           passwd $username
           sed -i "/\[user\]/a default = $username" /etc/wsl.conf >/dev/null
           echo " "
-          secs=5
+          secs=3
           while [ $secs -gt 0 ]; do
-            printf "\r\e[1;33mSystem needs to be restarted. Shutting down in %.d seconds.\e[0m" $((secs--))
+            printf ${ylw}"\r\033[KSystem needs to be shutdown to set default user. Shutting down in %.d seconds..."${txtrst} $((secs--))
             sleep 1
           done
           rm ~/.bash_profile
