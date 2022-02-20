@@ -6,12 +6,7 @@ red=$(tput setaf 1)
 ylw=$(tput setaf 3)
 txtrst=$(tput sgr0)
 
-width=$(echo $COLUMNS)
-height=$(echo $LINES)
-if [ $width -lt 140 ]; then
-    /mnt/c/Windows/System32/cmd.exe /C mode con:cols=140 lines=36
-fi
-figlet -w 140 Welcome to SlackwareWSL
+figlet -t -k -f /usr/share/figlet/mini.flf "Welcome to SlackwareWSL"
 echo -e "\033[33;7mDo not interrupt or close the terminal window till initial setup completes!!!\n\033[0m"
 
 diskvol=$(mount | grep -m1 ext4 | cut -f 1 -d " ")
@@ -80,14 +75,12 @@ select yn in "Yup" "Nope"; do
                         sleep 1
                     done
                     rm ~/.bash_profile
-                    /mnt/c/Windows/System32/cmd.exe /C mode con:cols=$width lines=$height
                     /mnt/c/Windows/System32/wsl.exe --terminate $WSL_DISTRO_NAME
                 fi
             done
             ;;
         Nope)
             clear
-            /mnt/c/Windows/System32/cmd.exe /C mode con:cols=$width lines=$height
             rm ~/.bash_profile
             break
             ;;
