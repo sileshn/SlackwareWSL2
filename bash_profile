@@ -61,7 +61,6 @@ select yn in "Yup" "Nope"; do
                     useradd -m -g users -G sudo,wheel,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner -s /bin/bash "$username"
                     echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
                     echo "%sudo ALL=(ALL) ALL" >/etc/sudoers.d/sudo
-                    sed -i 's/PATH="\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/games"/PATH="\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/games:\/sbin:\/usr\/sbin"/g' /etc/profile
                     cp -f /etc/skel/.bash_profile /home/"$username"/.bash_profile
                     cp -f /etc/skel/.bashrc /home/"$username"/.bashrc
                     echo "PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '" | tee -a /home/"$username"/.bashrc >/dev/null 2>&1
