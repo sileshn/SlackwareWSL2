@@ -6,7 +6,7 @@ red=$(tput setaf 1)
 ylw=$(tput setaf 3)
 txtrst=$(tput sgr0)
 
-figlet -t -k -f /usr/share/figlet/mini.flf "Welcome to SlackwareWSL"
+figlet -t -k -f /usr/share/figlet/mini.flf "Welcome to SlackwareWSL" | lolcat
 echo -e "\033[33;7mDo not interrupt or close the terminal window till initial setup completes!!!\n\033[0m"
 
 diskvol=$(mount | grep -m1 ext4 | cut -f 1 -d " ")
