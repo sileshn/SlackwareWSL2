@@ -6,8 +6,12 @@ Slackware on WSL2 (Windows 10 FCU or later) based on [wsldl](https://github.com/
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![License](https://img.shields.io/github/license/sileshn/SlackwareWSL.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/SlackwareWSL/main/LICENSE)
 
-## Important information
+## Features and important information
 This is a very minimal build of Slackware. The list of packages included may change from release to release. You can view the actual list of packages included in any release by downloading the [package_list.txt](https://github.com/sileshn/SlackwareWSL/releases) file.
+
+SlackwareWSL has the following features during the installation stage.
+* Increase virtual disk size from the default 256GB
+* Create a new user and set the user as default
 
 SlackwareWSL includes a wsl.conf file which only has section headers. Users can use this to configure the distro to their liking. You can read more about wsl.conf and its configuration settings [here](https://docs.microsoft.com/en-us/windows/wsl/wsl-config).
 
