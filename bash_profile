@@ -1,3 +1,4 @@
+#!/bin/bash
 # First run script for SlackwareWSL
 
 blu=$(tput setaf 4)
@@ -8,14 +9,29 @@ red=$(tput setaf 1)
 ylw=$(tput setaf 3)
 txtrst=$(tput sgr0)
 
+diskvol=$(mount | grep -m1 ext4 | cut -f 1 -d " ")
+sudo resize2fs $diskvol >/dev/null 2>&1
+disksize=$(df -k | grep $diskvol | cut -f8 -d " ")
+osname=$(/mnt/c/Windows/System32/wbem/wmic.exe os get Caption | sed -n 2p)
+width=$(echo $COLUMNS)
+
+if [ $width -gt 120 ]; then
+    width=120
+fi
+
+if [ ! -e ~/.hushlogin ] && env | grep "WT_SESSION" >/dev/null 2>&1; then
+    echo -e "\033[33;7mPlease read this important message!!!\n\033[0m"
+    echo -e ${mgn}"You are running SlackwareWSL in Windows Terminal on $osname\n"${txtrst}
+    echo -e "SlackwareWSL has been test run only in Windows command prompt on Windows 10. Windows Terminal displays an error message \033[31m[process exited with code 1 (0x00000001)]\033[0m whenever WSL is shutdown or terminated from within. This error is displayed during the disk resize and user creation steps. Though this doesn't affect the working of SlackwareWSL in any way, some of you may feel otherwise and report errors. I suggest you complete the initial setup in a Windows command prompt and switch to windows terminal post setup. If you choose to use Windows Terminal, ignore the displayed error message.\n" | fold -sw $width
+    read -n 1 -p "Press any key to continue..."
+    touch ~/.hushlogin
+    clear
+fi
+
 test -f /mnt/c/Users/Public/vhdresize.txt && rm /mnt/c/Users/Public/vhdresize.txt
 test -f ~/vhdresize.txt && rm ~/vhdresize.txt
 figlet -t -k -f /usr/share/figlet/mini.flf "Welcome to SlackwareWSL" | lolcat
 echo -e "\033[33;7mDo not interrupt or close the terminal window till initial setup completes!!!\n\033[0m"
-
-diskvol=$(mount | grep -m1 ext4 | cut -f 1 -d " ")
-sudo resize2fs $diskvol >/dev/null 2>&1
-disksize=$(df -k | grep $diskvol | cut -f8 -d " ")
 
 setcap cap_net_raw+ep /bin/ping
 chmod +x /usr/local/bin/slack_mirrortest
@@ -23,7 +39,7 @@ cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
 
 if [ $disksize -le 263174212 ]; then
-    echo -e ${ylw}"Your virtual hard disk has a maximum size of 256GB. If your distribution grows more than 256GB, you will see disk space errors. This can be fixed by expanding the virtual hard disk size and making WSL aware of the increase in file system size. For more information, visit this site (\033[36mhttps://docs.microsoft.com/en-us/windows/wsl/vhd-size\033[33m).\n"${txtrst} | fold -sw 120
+    echo -e ${ylw}"Your virtual hard disk has a maximum size of 256GB. If your distribution grows more than 256GB, you will see disk space errors. This can be fixed by expanding the virtual hard disk size and making WSL aware of the increase in file system size. For more information, visit this site (\033[36mhttps://docs.microsoft.com/en-us/windows/wsl/vhd-size\033[36m).\n"${txtrst} | fold -sw $width
     echo -e ${grn}"Would you like to resize your virtual hard disk?"${txtrst}
     select yn in "Yup" "Nope"; do
         case $yn in
@@ -57,8 +73,8 @@ if [ $disksize -le 263174212 ]; then
                             echo -en "\033[1B\033[1A\033[2K"
                             echo "expand vdisk maximum=$vhdsize" | sudo tee -a ~/vhdresize.txt >/dev/null 2>&1
                             echo " "
-							printf "%s" "$(<~/vhdresize.txt)"
-							echo " "
+                            printf "%s" "$(<~/vhdresize.txt)"
+                            echo " "
                             echo -e ${grn}"\nPlease review your input displayed above. Is is ok to proceed?"${txtrst}
                             select yn in "Proceed" "Edit"; do
                                 case $yn in
@@ -80,13 +96,15 @@ if [ $disksize -le 263174212 ]; then
                     fi
                 done
 
-                secs=5
                 echo " "
                 printf ${ylw}"Please grant powershell, elevated permissions to run diskpart when requested!!!\n"${txtrst}
-                while [ $secs -gt 0 ]; do
-                    printf ${ylw}"\r\033[KThis window will close when diskpart launches to resize your VHD in %.d seconds. "${txtrst} $((secs--))
-                    sleep 1
-                done
+                if env | grep "WT_SESSION" >/dev/null 2>&1; then
+                    printf ${ylw}"\r\033[KIgnore error message and close window manually after diskpart launches. "${txtrst}
+                    sleep 2
+                else
+                    printf ${ylw}"\r\033[KThis window will close after diskpart launches. "${txtrst}
+                    sleep 2
+                fi
                 /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -command "Start-Process -Verb RunAs 'diskpart.exe' -ArgumentList '/s C:\Users\Public\vhdresize.txt' -WindowStyle Hidden"
                 /mnt/c/Windows/System32/wsl.exe --shutdown $WSL_DISTRO_NAME
                 ;;
@@ -126,12 +144,15 @@ select yn in "Yup" "Nope"; do
                     passwd $username
                     sed -i "/\[user\]/a default = $username" /etc/wsl.conf >/dev/null
                     echo " "
-                    secs=3
-                    while [ $secs -gt 0 ]; do
-                        printf ${ylw}"\r\033[KSystem needs to be shutdown to set default user. Shutting down in %.d seconds..."${txtrst} $((secs--))
-                        sleep 1
-                    done
+                    if env | grep "WT_SESSION" >/dev/null 2>&1; then
+                        printf ${ylw}"\r\033[KIgnore error message and close window manually."${txtrst}
+                        sleep 2
+                    else
+                        printf ${ylw}"\r\033[KSystem will shutdown to set default user."${txtrst}
+                        sleep 2
+                    fi
                     rm ~/.bash_profile
+                    rm ~/.hushlogin
                     /mnt/c/Windows/System32/wsl.exe --terminate $WSL_DISTRO_NAME
                 fi
             done
@@ -139,6 +160,7 @@ select yn in "Yup" "Nope"; do
         Nope)
             clear
             rm ~/.bash_profile
+            rm ~/.hushlogin
             break
             ;;
     esac
