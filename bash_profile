@@ -31,8 +31,7 @@ cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
 
 if [ "$disksize" -le 263174212 ]; then
-    echo -e ${ylw}"Your virtual hard disk has a maximum size of 256GB. If your distribution grows more than 256GB, you will see disk space errors. This can be fixed by expanding the virtual hard disk size and making WSL aware of the increase in file system size. For more information, visit this site (\033[36mhttps://docs.microsoft.com/en-us/windows/wsl/vhd-size\033[33m).\n"${txtrst} | fold -sw $width
-    echo -e ${grn}"Would you like to resize your virtual hard disk?"${txtrst}
+    echo -e ${grn}"SlackwareWSL's VHD has a default maximum size of 256GB. Disk space errors which occur if size exceeds 256GB can be fixed by expanding the VHD. Would you like to resize your VHD? More information on this process is available at \033[36mhttps://docs.microsoft.com/en-us/windows/wsl/vhd-size\033[32m."${txtrst} | fold -sw $width
     select yn in "Yes" "No"; do
         case $yn in
             Yes)
@@ -66,7 +65,8 @@ if [ "$disksize" -le 263174212 ]; then
                             echo " "
                             printf "%s" "$(<~/vhdresize.txt)"
                             echo " "
-                            echo -e ${grn}"\nPlease review your input displayed above. Is is ok to proceed?"${txtrst}
+                            echo -e ${grn}"\nReview the information displayed above and confirm to proceed."${txtrst}
+                            echo -e ${red}"Edit only your input if you want to make changes!!!"${txtrst}
                             select yn in "Proceed" "Edit"; do
                                 case $yn in
                                     Proceed)
@@ -96,10 +96,14 @@ if [ "$disksize" -le 263174212 ]; then
                     fi
                 done
 
-                echo " "
-                printf ${ylw}"Please grant powershell elevated permissions to run diskpart when requested!!!\n"${txtrst}
-                printf ${ylw}"SlackwareWSL will restart after disk has been resized!!\n"${txtrst}
-                sleep 2
+                secs=3
+                printf ${ylw}"\nPlease grant diskpart elevated permissions when requested. SlackwareWSL will restart after disk resize.\n"${txtrst}
+                printf ${red}"Warning!!! Any open wsl distros will be shutdown.\n\n"${txtrst}
+                while [ $secs -gt 0 ]; do
+                    printf "\r\033[KShutting down in %.d seconds. " $((secs--))
+                    sleep 1
+                done
+				
                 /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -command "Start-Process -Verb Open -FilePath 'shutdown.cmd' -WorkingDirectory 'C:\Users\Public' -WindowStyle Hidden"
                 exec sleep 0
                 ;;
@@ -147,9 +151,14 @@ select yn in "Yes" "No"; do
                     fi
                     echo "del C:\Users\Public\shutdown.cmd" | sudo tee -a ~/shutdown.cmd >/dev/null 2>&1
                     cp ~/shutdown.cmd /mnt/c/Users/Public
-                    echo " "
-                    printf ${ylw}"\r\033[KTo set the new user as the default user, SlackwareWSL will terminate in 2 seconds and restart!!!"${txtrst}
-                    sleep 2
+
+                    secs=3
+                    printf ${ylw}"\nTo set the new user as the default user, SlackwareWSL will shutdown and restart!!!\n\n"${txtrst}
+                    while [ $secs -gt 0 ]; do
+                        printf "\r\033[KShutting down in %.d seconds. " $((secs--))
+                        sleep 1
+                    done
+
                     rm ~/.bash_profile
                     /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -command "Start-Process -Verb Open -FilePath 'shutdown.cmd' -WorkingDirectory 'C:\Users\Public' -WindowStyle Hidden"
                     exec sleep 0
