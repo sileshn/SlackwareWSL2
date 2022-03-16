@@ -10,7 +10,7 @@ txtrst=$(tput sgr0)
 
 diskvol=$(mount | grep -m1 ext4 | cut -f 1 -d " ")
 sudo resize2fs $diskvol >/dev/null 2>&1
-disksize=$(df -k | grep $diskvol | cut -f8 -d " ")
+disksize=$(sudo blockdev --getsize64 $diskvol)
 osname=$(/mnt/c/Windows/System32/wbem/wmic.exe os get Caption | sed -n 2p)
 width=$(echo $COLUMNS)
 
@@ -30,7 +30,7 @@ chmod +x /usr/local/bin/slack_mirrortest
 cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
 
-if [ "$disksize" -le 263174212 ]; then
+if [ "$disksize" -le 274877906944 ]; then
     echo -e ${grn}"SlackwareWSL's VHD has a default maximum size of 256GB. Disk space errors which occur if size exceeds 256GB can be fixed by expanding the VHD. Would you like to resize your VHD? More information on this process is available at \033[36mhttps://docs.microsoft.com/en-us/windows/wsl/vhd-size\033[32m."${txtrst} | fold -sw $width
     select yn in "Yes" "No"; do
         case $yn in
