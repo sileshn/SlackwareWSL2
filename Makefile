@@ -65,4 +65,5 @@ clean:
 	-rm rootfs.tar.gz
 	-sudo rm -r rootfs
 	-rm base.tar
+	-rm package_list_current.txt
 	-docker rmi -f vbatts/slackware:current
