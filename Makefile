@@ -65,4 +65,5 @@ clean:
 	-rm rootfs.tar.gz
 	-sudo rm -r rootfs
 	-rm base.tar
+	-rm package_list.txt
 	-docker rmi -f liveslak/slackware:base_x64_15.0
