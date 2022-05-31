@@ -7,7 +7,7 @@ Slackware on WSL2 (Windows 10 FCU or later) based on [wsldl](https://github.com/
 [![License](https://img.shields.io/github/license/sileshn/SlackwareWSL.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/SlackwareWSL/main/LICENSE)
 
 ## Features and important information
-This is a very minimal build of Slackware. The list of packages included may change from release to release. You can view the actual list of packages included in any release by downloading the [package_list.txt](https://github.com/sileshn/SlackwareWSL/releases) file.
+This is a very minimal build of Slackware. The list of packages included may change from release to release. You can view the actual list of packages included in any release by downloading the [package_list.txt](https://github.com/sileshn/SlackwareWSL/releases) file. This file is also created while building the distro.
 
 SlackwareWSL has the following features during the installation stage.
 * Increase virtual disk size from the default 256GB
