@@ -1,4 +1,4 @@
-OUT_ZIP=SlackwareWSL_multilib.zip
+OUT_ZIP=SlackwareWSL2_multilib.zip
 LNCR_EXE=Slackware.exe
 
 DLR=curl
