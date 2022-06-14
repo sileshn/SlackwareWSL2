@@ -1,19 +1,19 @@
-# SlackwareWSL
+# SlackwareWSL2
 Slackware on WSL2 (Windows 10 FCU or later) based on [wsldl](https://github.com/yuk7/wsldl).
 
 <a href='http://postimg.cc/3dPv323Z' target='_blank'><img src='https://i.postimg.cc/3dPv323Z/Screenshot-2022-02-21-161127.png' border='0' alt='Screenshot-2022-02-21-161127'/></a>   <a href='http://postimg.cc/mPCFkhDW' target='_blank'><img src='https://i.postimg.cc/mPCFkhDW/Screenshot-2022-02-21-161206.png' border='0' alt='Screenshot-2022-02-21-161206'/></a>   <a href='http://postimg.cc/G8hBXQjb' target='_blank'><img src='https://i.postimg.cc/G8hBXQjb/Screenshot-2022-02-21-161249.png' border='0' alt='Screenshot-2022-02-21-161249'/></a>   <a href='http://postimg.cc/7G663Lx6' target='_blank'><img src='https://i.postimg.cc/7G663Lx6/Screenshot-2022-02-21-161314.png' border='0' alt='Screenshot-2022-02-21-161314'/></a>   <a href='http://postimg.cc/BLVvMG6C' target='_blank'><img src='https://i.postimg.cc/BLVvMG6C/Screenshot-2022-02-21-161414.png' border='0' alt='Screenshot-2022-02-21-161414'/></a>    <a href='http://postimg.cc/9rpvHpPv' target='_blank'><img src='https://i.postimg.cc/9rpvHpPv/Screenshot-2022-02-17-132617.png' border='0' alt='Screenshot-2022-02-17-132617'/></a>    <a href='http://postimg.cc/xX1Bfztq' target='_blank'><img src='https://i.postimg.cc/xX1Bfztq/Screenshot-2022-02-17-132742.png' border='0' alt='Screenshot-2022-02-17-132742'/></a>    <a href='http://postimg.cc/G4gVHm5K' target='_blank'><img src='https://i.postimg.cc/G4gVHm5K/Screenshot-2022-02-17-132916.png' border='0' alt='Screenshot-2022-02-17-132916'/></a>
-[![Github All Releases](https://img.shields.io/github/downloads/sileshn/SlackwareWSL/total.svg?style=flat-square)](https://github.com/sileshn/SlackwareWSL/releases)
+[![Github All Releases](https://img.shields.io/github/downloads/sileshn/SlackwareWSL2/total.svg?style=flat-square)](https://github.com/sileshn/SlackwareWSL2/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![License](https://img.shields.io/github/license/sileshn/SlackwareWSL.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/SlackwareWSL/main/LICENSE)
+[![License](https://img.shields.io/github/license/sileshn/SlackwareWSL2.svg?style=flat-square)](https://raw.githubusercontent.com/sileshn/SlackwareWSL2/main/LICENSE)
 
 ## Features and important information
-This is a very minimal build of Slackware. The list of packages included may change from release to release. You can view the actual list of packages included in any release by downloading the [package_list.txt](https://github.com/sileshn/SlackwareWSL/releases) file. This file is also created while building the distro.
+This is a very minimal build of Slackware. The list of packages included may change from release to release. You can view the actual list of packages included in any release by downloading the [package_list.txt](https://github.com/sileshn/SlackwareWSL2/releases) file. This file is also created while building the distro.
 
-SlackwareWSL has the following features during the installation stage.
+SlackwareWSL2 has the following features during the installation stage.
 * Increase virtual disk size from the default 256GB
 * Create a new user and set the user as default
 
-SlackwareWSL includes a wsl.conf file which only has section headers. Users can use this to configure the distro to their liking. You can read more about wsl.conf and its configuration settings [here](https://docs.microsoft.com/en-us/windows/wsl/wsl-config).
+SlackwareWSL2 includes a wsl.conf file which only has section headers. Users can use this to configure the distro to their liking. You can read more about wsl.conf and its configuration settings [here](https://docs.microsoft.com/en-us/windows/wsl/wsl-config).
 
 ## Requirements
 * For x64 systems: Version 1903 or higher, with Build 18362 or higher.
@@ -36,7 +36,7 @@ SlackwareWSL includes a wsl.conf file which only has section headers. Users can 
 
 ## Install
 * Make sure all the steps mentioned under "Requirements" are completed.
-* [Download](https://github.com/sileshn/SlackwareWSL/releases/latest) installer zip
+* [Download](https://github.com/sileshn/SlackwareWSL2/releases/latest) installer zip
 * Extract all files in zip file to same directory
 * Set version 2 as default. Note that this step is required only for manual installation.
   ```dos
@@ -122,7 +122,7 @@ Usage :
 
 ## How to setup
 
-SlackwareWSL will ask you to create a new user during its first run. If you chose to create a new user during initial setup, the steps below are not required unless you want to create additional users.
+SlackwareWSL2 will ask you to create a new user during its first run. If you chose to create a new user during initial setup, the steps below are not required unless you want to create additional users.
 ```dos
 passwd
 groupadd sudo
@@ -149,7 +149,7 @@ Execute the command below in a windows cmd terminal from the directory where Sla
 >Slackware.exe config --default-user <username>
 ```
 
-The next step involves changing the default mirror to your liking. This is achieved by editing the `/etc/slackpkg/mirrors` file. SlackwareWSL uses the default mirror provided by Slackware `(http:\\slackware.osuosl.org\slackware64-15.0\)`. You can find a list of Slackware mirrors [here](https://mirrors.slackware.com/mirrorlist/). SlackwareWSL also provides a script to list the top 10 fastest slackware mirrors. You can run the script with the following command.
+The next step involves changing the default mirror to your liking. This is achieved by editing the `/etc/slackpkg/mirrors` file. SlackwareWSL2 uses the default mirror provided by Slackware `(http:\\slackware.osuosl.org\slackware64-15.0\)`. You can find a list of Slackware mirrors [here](https://mirrors.slackware.com/mirrorlist/). SlackwareWSL2 also provides a script to list the top 10 fastest slackware mirrors. You can run the script with the following command.
 ```dos
 slack_mirrortest
 ```
@@ -206,12 +206,12 @@ You may need to run the command below in some circumstances.
 Docker, tar, zip, unzip, bsdtar need to be installed.
 
 ```dos
-git clone git@gitlab.com:sileshn/SlackwareWSL.git
-cd SlackwareWSL
+git clone git@gitlab.com:sileshn/SlackwareWSL2.git
+cd SlackwareWSL2
 make
 
 ```
-Copy the SlackwareWSL.zip file to a safe location and run the command below to clean.
+Copy the SlackwareWSL2.zip file to a safe location and run the command below to clean.
 ```dos
 make clean
 
