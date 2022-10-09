@@ -27,6 +27,8 @@ echo -e "\033[33;7mDo not interrupt or close the terminal window till script fin
 
 setcap cap_net_raw+ep /bin/ping
 chmod +x /usr/local/bin/slack_mirrortest
+echo -e ${grn}"Updating CA certificates..."${txtrst}
+/usr/sbin/update-ca-certificates --fresh >/dev/null
 cp -f /etc/skel/.bashrc ~/.bashrc
 echo "PS1='\[\033[01;31m\][\u@\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '" | tee -a ~/.bashrc >/dev/null 2>&1
 
